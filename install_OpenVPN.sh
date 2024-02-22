@@ -14,9 +14,6 @@ for locale_entry in "${locales_to_generate[@]}"; do
     sudo locale-gen "$locale_entry"
 done
 
-# Set default system locale
-sudo update-locale LANG=en_GB.UTF-8
-
 # Check if the external IP address is set as an environment variable
 if [ -z "$FIRST_EXTERNAL_IP" ]; then
     echo "ERROR: FIRST_EXTERNAL_IP environment variable is not set. Running the script to get the external IP..."
@@ -32,6 +29,12 @@ apt-get update
 
 # Install OpenVPN
 apt-get install -y openvpn
+
+# Check if the folder structure exists
+if [ ! -d "/usr/share/doc/openvpn/examples/easy-rsa/" ]; then
+    echo "Error: easy-rsa directory not found. OpenVPN installation might be incomplete."
+    exit 1
+fi
 
 # Copy example configuration files to the OpenVPN directory
 cp -r /usr/share/doc/openvpn/examples/easy-rsa/ /etc/openvpn
