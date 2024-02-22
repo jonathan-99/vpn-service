@@ -27,6 +27,9 @@ cd /etc/openvpn/easy-rsa || exit
 # Initialize the EasyRSA environment
 ./easyrsa init-pki
 
+# Amend copied configuration files for OpenVPN
+sed -i 's/KEY_NAME="EasyRSA"/KEY_NAME="server"/g' /etc/openvpn/easy-rsa/vars
+
 # Build the certificate authority
 ./easyrsa build-ca nopass
 
