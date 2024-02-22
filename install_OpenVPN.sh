@@ -14,6 +14,18 @@ for locale_entry in "${locales_to_generate[@]}"; do
     sudo locale-gen "$locale_entry"
 done
 
+# Define the network interface and gateway IP address
+interface="eth0"
+gateway_ip="192.168.1.1"
+
+# Prepare the configuration to be added
+config="auto $interface\n"
+config+="iface $interface inet dhcp\n"
+config+="    post-up route add default gw $gateway_ip\n"
+
+# Insert the configuration into the /etc/network/interfaces file
+echo -e "$config" | sudo tee -a /etc/network/interfaces > /dev/null
+
 # Check if the external IP address is set as an environment variable
 if [ -z "$FIRST_EXTERNAL_IP" ]; then
     echo "ERROR: FIRST_EXTERNAL_IP environment variable is not set. Running the script to get the external IP..."
