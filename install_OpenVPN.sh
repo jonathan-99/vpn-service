@@ -40,6 +40,13 @@ config+="    post-up route add default gw $gateway_ip\n"
 # Insert the configuration into the /etc/network/interfaces file
 echo -e "$config" | sudo tee -a /etc/network/interfaces > /dev/null
 
+# Extract common name from /etc/hosts
+common_name=$(grep -E "^\s*127.0.0.1" /etc/hosts | awk '{print $2}')
+
+# Update OpenVPN configuration files with the common name
+sudo sed -i "s|<COMMON_NAME>|$common_name|g" /etc/openvpn/server.conf
+sudo sed -i "s|<COMMON_NAME>|$common_name|g" /etc/openvpn/client.conf
+
 # Check if the external IP address is set as an environment variable
 if [ -z "$FIRST_EXTERNAL_IP" ]; then
     echo "ERROR: FIRST_EXTERNAL_IP environment variable is not set. Running the script to get the external IP..."
