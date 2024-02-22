@@ -9,13 +9,24 @@ fi
 # Set locales to generate
 locales_to_generate=("en_GB.UTF-8 UTF-8")
 
-# Generate locales
-LC_ALL=C sudo locale-gen "${locales_to_generate[@]}" 2>/dev/null
-
-# Generate locales
+# Check if locales are already set correctly
+locales_are_set=1
 for locale_entry in "${locales_to_generate[@]}"; do
-    sudo locale-gen "$locale_entry"
+    if ! locale -a | grep -q "$locale_entry"; then
+        locales_are_set=0
+        break
+    fi
 done
+
+# If locales are not set correctly, generate them
+if [ $locales_are_set -eq 0 ]; then
+    echo "Locales are not set correctly. Generating locales..."
+
+    # Generate locales
+    LC_ALL=C sudo locale-gen "${locales_to_generate[@]}" 2>/dev/null
+else
+    echo "Locales are already set correctly."
+fi
 
 # Define the network interface and gateway IP address
 interface="eth0"
