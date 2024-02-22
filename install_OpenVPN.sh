@@ -8,8 +8,12 @@ fi
 
 # Check if the external IP address is set as an environment variable
 if [ -z "$FIRST_EXTERNAL_IP" ]; then
-    echo "ERROR: FIRST_EXTERNAL_IP environment variable is not set. Run the script to get the external IP first."
-    exit 1
+    echo "ERROR: FIRST_EXTERNAL_IP environment variable is not set. Running the script to get the external IP..."
+    ./get_external_ip_addr.sh
+    if [ $? -ne 0 ]; then
+        echo "Failed to retrieve the external IP address. Exiting."
+        exit 1
+    fi
 fi
 
 # Update package lists
