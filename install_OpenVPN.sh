@@ -6,6 +6,17 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# Set locales to generate
+locales_to_generate=("en_GB.UTF-8 UTF-8")
+
+# Generate locales
+for locale_entry in "${locales_to_generate[@]}"; do
+    sudo locale-gen "$locale_entry"
+done
+
+# Set default system locale
+sudo update-locale LANG=en_GB.UTF-8
+
 # Check if the external IP address is set as an environment variable
 if [ -z "$FIRST_EXTERNAL_IP" ]; then
     echo "ERROR: FIRST_EXTERNAL_IP environment variable is not set. Running the script to get the external IP..."
