@@ -10,6 +10,9 @@ fi
 locales_to_generate=("en_GB.UTF-8 UTF-8")
 
 # Generate locales
+LC_ALL=C sudo locale-gen "${locales_to_generate[@]}"
+
+# Generate locales
 for locale_entry in "${locales_to_generate[@]}"; do
     sudo locale-gen "$locale_entry"
 done
