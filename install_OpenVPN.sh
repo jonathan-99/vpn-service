@@ -47,6 +47,8 @@ common_name=$(grep -E "^\s*127.0.0.1" /etc/hosts | awk '{print $2}')
 sudo sed -i "s|<COMMON_NAME>|$common_name|g" /etc/openvpn/server.conf
 sudo sed -i "s|<COMMON_NAME>|$common_name|g" /etc/openvpn/client.conf
 
+echo "dev tun" | sudo tee -a /etc/openvpn/server.conf
+
 # Check if the external IP address is set as an environment variable
 if [ -z "$FIRST_EXTERNAL_IP" ]; then
     echo "ERROR: FIRST_EXTERNAL_IP environment variable is not set. Running the script to get the external IP..."
