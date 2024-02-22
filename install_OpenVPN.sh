@@ -10,7 +10,7 @@ fi
 locales_to_generate=("en_GB.UTF-8 UTF-8")
 
 # Generate locales
-LC_ALL=C sudo locale-gen "${locales_to_generate[@]}"
+LC_ALL=C sudo locale-gen "${locales_to_generate[@]}" 2>/dev/null
 
 # Generate locales
 for locale_entry in "${locales_to_generate[@]}"; do
@@ -46,13 +46,13 @@ apt-get update
 apt-get install -y openvpn
 
 # Check if the folder structure exists
-if [ ! -d "/usr/share/doc/openvpn/examples/easy-rsa/" ]; then
+if [ ! -d "/usr/share/easy-rsa/" ]; then
     echo "Error: easy-rsa directory not found. OpenVPN installation might be incomplete."
     exit 1
 fi
 
 # Copy example configuration files to the OpenVPN directory
-cp -r /usr/share/doc/openvpn/examples/easy-rsa/ /etc/openvpn
+cp -r /usr/share/easy-rsa/ /etc/openvpn
 
 # Change directory to the EasyRSA directory
 cd /etc/openvpn/easy-rsa || exit
